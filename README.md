@@ -18,7 +18,7 @@ Successor of [cgoinglove/mcp-server-kakao-map](https://github.com/cgoinglove/mcp
   "mcpServers": {
     "kakaomap": {
       "command": "npx",
-      "args": ["-y", "github:bong-u/mcp-server-kakao-map#v0.1.0"],
+      "args": ["-y", "mcp-server-kakao-map@0.1.0"],
       "env": { "KAKAO_REST_API_KEY": "<YOUR_KEY>" }
     }
   }
@@ -28,7 +28,7 @@ Successor of [cgoinglove/mcp-server-kakao-map](https://github.com/cgoinglove/mcp
 또는 CLI:
 
 ```sh
-claude mcp add kakaomap --env KAKAO_REST_API_KEY=<YOUR_KEY> -- npx -y github:bong-u/mcp-server-kakao-map#v0.1.0
+claude mcp add kakaomap --env KAKAO_REST_API_KEY=<YOUR_KEY> -- npx -y mcp-server-kakao-map@0.1.0
 ```
 
 ### Codex
@@ -38,7 +38,7 @@ claude mcp add kakaomap --env KAKAO_REST_API_KEY=<YOUR_KEY> -- npx -y github:bon
 ```toml
 [mcp_servers.kakaomap]
 command = "npx"
-args = ["-y", "github:bong-u/mcp-server-kakao-map#v0.1.0"]
+args = ["-y", "mcp-server-kakao-map@0.1.0"]
 
 [mcp_servers.kakaomap.env]
 KAKAO_REST_API_KEY = "<YOUR_KEY>"
@@ -52,7 +52,7 @@ KAKAO_REST_API_KEY = "<YOUR_KEY>"
 mcp_servers:
   kakaomap:
     command: "npx"
-    args: ["-y", "github:bong-u/mcp-server-kakao-map#v0.1.0"]
+    args: ["-y", "mcp-server-kakao-map@0.1.0"]
     env:
       KAKAO_REST_API_KEY: "<YOUR_KEY>"
 ```
