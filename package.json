@@ -1,0 +1,40 @@
+{
+  "name": "mcp-server-kakao-map",
+  "version": "0.1.0",
+  "description": "MCP server exposing Kakao Local REST APIs (place search, address, geocoding, coord conversion) as discrete tools.",
+  "license": "MIT",
+  "author": "bong-u",
+  "type": "module",
+  "bin": {
+    "mcp-server-kakao-map": "dist/index.js"
+  },
+  "files": [
+    "dist",
+    "src",
+    "tsconfig.json"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "tsc",
+    "dev": "tsx --env-file=.env src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check src tests",
+    "format": "biome format --write src tests",
+    "test": "tsx --test tests/**/*.test.ts",
+    "smoke": "tsx --env-file=.env tests/smoke.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.15",
+    "@types/node": "^22.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.6.0"
+  }
+}
