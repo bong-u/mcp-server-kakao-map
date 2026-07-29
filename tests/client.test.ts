@@ -102,6 +102,86 @@ describe('kakaoFetch', () => {
     );
   });
 
+  it('passes an abort signal so a hung request cannot wait forever', async () => {
+    const { calls } = installFetch(async () => new Response('{}', { status: 200 }));
+
+    await kakaoFetch('/v2/local/search/keyword.json', { query: 'x' });
+
+    const signal = calls[0]?.init?.signal;
+    assert.ok(signal instanceof AbortSignal, 'expected fetch to receive an AbortSignal');
+  });
+
+  it('reports a timeout as a readable error instead of the raw TimeoutError', async () => {
+    installFetch(async () => {
+      // AbortSignal.timeout()이 실제로 던지는 것과 같은 형태
+      const err = new Error('The operation was aborted due to timeout');
+      err.name = 'TimeoutError';
+      throw err;
+    });
+
+    await assert.rejects(
+      () => kakaoFetch('/v2/local/search/keyword.json', { query: 'x' }),
+      (err: unknown) => {
+        assert.ok(err instanceof Error);
+        assert.match(err.message, /did not respond within 10000ms/);
+        assert.match(err.message, /keyword\.json/);
+        return true;
+      },
+    );
+  });
+
+  it('translates a timeout that fires while reading the body, not just the fetch', async () => {
+    // fetch는 헤더만 받고 즉시 resolve된 뒤 바디 스트림에서 타임아웃이 터지는 상황.
+    // 실제로 재현되는 경로이므로 mock도 스트림 에러로 재현한다.
+    installFetch(async () => {
+      const body = new ReadableStream({
+        start(controller) {
+          const err = new Error('The operation was aborted due to timeout');
+          err.name = 'TimeoutError';
+          controller.error(err);
+        },
+      });
+      return new Response(body, { status: 200 });
+    });
+
+    await assert.rejects(
+      () => kakaoFetch('/v2/local/search/keyword.json', { query: 'x' }),
+      (err: unknown) => {
+        assert.ok(err instanceof Error);
+        assert.match(err.message, /did not respond within 10000ms/);
+        return true;
+      },
+    );
+  });
+
+  it('keeps the original error as cause for debugging', async () => {
+    installFetch(async () => {
+      const err = new Error('The operation was aborted due to timeout');
+      err.name = 'TimeoutError';
+      throw err;
+    });
+
+    await assert.rejects(
+      () => kakaoFetch('/v2/local/search/keyword.json', { query: 'x' }),
+      (err: unknown) => {
+        assert.ok(err instanceof Error);
+        assert.equal((err.cause as Error)?.name, 'TimeoutError');
+        return true;
+      },
+    );
+  });
+
+  it('rethrows non-timeout network errors unchanged', async () => {
+    installFetch(async () => {
+      throw new TypeError('fetch failed');
+    });
+
+    await assert.rejects(
+      () => kakaoFetch('/v2/local/search/keyword.json', { query: 'x' }),
+      (err: unknown) => err instanceof TypeError && err.message === 'fetch failed',
+    );
+  });
+
   it('throws KakaoApiError on 429 (quota)', async () => {
     installFetch(async () => new Response('Too Many Requests', { status: 429 }));
 
