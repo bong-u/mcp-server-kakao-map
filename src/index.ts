@@ -10,7 +10,7 @@ import { LocalKeywordSchema, localKeyword } from './tools/local-keyword.js';
 
 const server = new McpServer({
   name: 'mcp-server-kakao-map',
-  version: '0.1.0',
+  version: '0.2.0',
 });
 
 server.registerTool(
