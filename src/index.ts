@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
-import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
+import { McpServer } from '@modelcontextprotocol/server';
+import { StdioServerTransport } from '@modelcontextprotocol/server/stdio';
 import { GeoCoord2AddressSchema, geoCoord2Address } from './tools/geo-coord2address.js';
 import { GeoCoord2RegionCodeSchema, geoCoord2RegionCode } from './tools/geo-coord2regioncode.js';
 import { GeoTransCoordSchema, geoTransCoord } from './tools/geo-transcoord.js';
@@ -10,7 +10,7 @@ import { LocalKeywordSchema, localKeyword } from './tools/local-keyword.js';
 
 const server = new McpServer({
   name: 'mcp-server-kakao-map',
-  version: '0.2.0',
+  version: '0.3.0',
 });
 
 server.registerTool(

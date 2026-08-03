@@ -1,4 +1,4 @@
-import type { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { ToolCallback } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { kakaoFetch, okResponse } from '../client.js';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../schemas/common.js';
 import type { LocalKeywordResponse } from '../types/local.js';
 
-export const LocalKeywordSchema = {
+export const LocalKeywordSchema = z.object({
   query: z.string().min(1).describe('검색어'),
   category_group_code: z.enum(CATEGORY_GROUP_CODES).optional().describe(CATEGORY_GROUP_DESCRIPTION),
   x: xParam.optional(),
@@ -28,7 +28,7 @@ export const LocalKeywordSchema = {
   page: pageParam,
   size: placeSizeParam,
   sort: placeSortParam,
-};
+});
 
 export const localKeyword: ToolCallback<typeof LocalKeywordSchema> = async (input) => {
   if (input.radius !== undefined && (input.x === undefined || input.y === undefined)) {

@@ -1,6 +1,6 @@
 {
   "name": "mcp-server-kakao-map",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "MCP server exposing Kakao Local REST APIs (place search, address, geocoding, coord conversion) as discrete tools.",
   "license": "MIT",
   "author": "bong-u",
@@ -28,7 +28,7 @@
     "smoke": "tsx --env-file=.env tests/smoke.ts"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@modelcontextprotocol/server": "^2.0.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {

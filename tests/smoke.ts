@@ -1,5 +1,5 @@
 import { writeFileSync } from 'node:fs';
-import { z } from 'zod';
+import type { z } from 'zod';
 import { GeoCoord2AddressSchema, geoCoord2Address } from '../src/tools/geo-coord2address.js';
 import {
   GeoCoord2RegionCodeSchema,
@@ -15,7 +15,7 @@ type Scenario = {
   tool: string;
   description: string;
   input: Record<string, unknown>;
-  schema: z.ZodRawShape;
+  schema: z.ZodObject;
   callback: (parsed: unknown, extra: unknown) => Promise<ToolResult>;
 };
 
@@ -76,7 +76,7 @@ type RunResult = {
 async function runScenario(sc: Scenario): Promise<RunResult> {
   const start = Date.now();
   try {
-    const parsed = z.object(sc.schema).parse(sc.input);
+    const parsed = sc.schema.parse(sc.input);
     const out = await sc.callback(parsed, {});
     const payload = JSON.parse(out.content?.[0]?.text ?? '');
     const ms = Date.now() - start;

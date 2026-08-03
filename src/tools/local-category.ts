@@ -1,4 +1,4 @@
-import type { ToolCallback } from '@modelcontextprotocol/sdk/server/mcp.js';
+import type { ToolCallback } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { kakaoFetch, okResponse } from '../client.js';
 import {
@@ -12,7 +12,7 @@ import {
 } from '../schemas/common.js';
 import type { LocalCategoryResponse } from '../types/local.js';
 
-export const LocalCategorySchema = {
+export const LocalCategorySchema = z.object({
   category_group_code: z.enum(CATEGORY_GROUP_CODES).describe(CATEGORY_GROUP_DESCRIPTION),
   x: xParam.optional(),
   y: yParam.optional(),
@@ -30,7 +30,7 @@ export const LocalCategorySchema = {
   page: pageParam,
   size: placeSizeParam,
   sort: placeSortParam,
-};
+});
 
 export const localCategory: ToolCallback<typeof LocalCategorySchema> = async (input) => {
   const hasCircle = input.x !== undefined && input.y !== undefined && input.radius !== undefined;
