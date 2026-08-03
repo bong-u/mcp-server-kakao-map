@@ -1,0 +1,10 @@
+// 타입 검사 전용. tsconfig.json은 dist 빌드용이라 rootDir가 src로 묶여 있어
+// tests를 include할 수 없다 (tests/*.ts는 tsx가 타입을 벗겨 실행하므로 검사되지 않음).
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "rootDir": "."
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
+}

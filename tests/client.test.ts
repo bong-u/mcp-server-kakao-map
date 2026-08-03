@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { afterEach, beforeEach, describe, it } from 'node:test';
 import { KakaoApiError, kakaoFetch } from '../src/client.js';
 
-type FetchMock = (input: RequestInfo | URL, init?: RequestInit) => Promise<Response>;
+type FetchMock = (input: Parameters<typeof fetch>[0], init?: RequestInit) => Promise<Response>;
 
 const originalFetch = globalThis.fetch;
 const originalKey = process.env.KAKAO_REST_API_KEY;
