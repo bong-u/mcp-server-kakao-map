@@ -1,0 +1,89 @@
+import { McpServer } from '@modelcontextprotocol/server';
+import { GeoCoord2AddressSchema, geoCoord2Address } from './tools/geo-coord2address.js';
+import { GeoCoord2RegionCodeSchema, geoCoord2RegionCode } from './tools/geo-coord2regioncode.js';
+import { GeoTransCoordSchema, geoTransCoord } from './tools/geo-transcoord.js';
+import { LocalAddressSchema, localAddress } from './tools/local-address.js';
+import { LocalCategorySchema, localCategory } from './tools/local-category.js';
+import { LocalKeywordSchema, localKeyword } from './tools/local-keyword.js';
+
+export const SERVER_NAME = 'mcp-server-kakao-map';
+export const SERVER_VERSION = '0.3.0';
+
+// 팩토리로 두는 이유: 테스트가 stdio 프로세스를 띄우지 않고 인스턴스를 얻을 수 있고,
+// 향후 serveStdio(() => buildServer())로 넘어갈 때 그대로 쓰인다.
+export function buildServer(): McpServer {
+  const server = new McpServer({
+    name: SERVER_NAME,
+    version: SERVER_VERSION,
+  });
+
+  server.registerTool(
+    'kakao_local_search_keyword',
+    {
+      title: '카카오 키워드 장소 검색',
+      description:
+        '키워드로 장소를 검색한다. 좌표(x,y)+radius 또는 rect로 영역 한정 가능. 카테고리 필터, 정확도/거리 정렬, 페이지네이션 지원.',
+      inputSchema: LocalKeywordSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    localKeyword,
+  );
+
+  server.registerTool(
+    'kakao_local_search_category',
+    {
+      title: '카카오 카테고리 장소 검색',
+      description:
+        '카테고리 그룹 코드로 장소를 검색한다. x/y/radius(원형) 또는 rect(사각형) 중 하나로 영역 지정 필수.',
+      inputSchema: LocalCategorySchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    localCategory,
+  );
+
+  server.registerTool(
+    'kakao_local_search_address',
+    {
+      title: '카카오 주소 검색',
+      description: '주소 문자열로 지번/도로명 주소를 검색해 좌표와 행정 정보를 반환한다.',
+      inputSchema: LocalAddressSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    localAddress,
+  );
+
+  server.registerTool(
+    'kakao_local_geo_coord2address',
+    {
+      title: '카카오 좌표 → 주소 변환',
+      description: '좌표(x,y)를 지번/도로명 주소로 역지오코딩한다.',
+      inputSchema: GeoCoord2AddressSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    geoCoord2Address,
+  );
+
+  server.registerTool(
+    'kakao_local_geo_coord2regioncode',
+    {
+      title: '카카오 좌표 → 행정구역',
+      description: '좌표(x,y)에 해당하는 행정동(H) 및 법정동(B) 정보를 반환한다.',
+      inputSchema: GeoCoord2RegionCodeSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    geoCoord2RegionCode,
+  );
+
+  server.registerTool(
+    'kakao_local_geo_transcoord',
+    {
+      title: '카카오 좌표계 변환',
+      description: 'WGS84, TM, KTM, UTM, BESSEL 등 좌표계 간 변환을 수행한다.',
+      inputSchema: GeoTransCoordSchema,
+      annotations: { readOnlyHint: true, openWorldHint: true },
+    },
+    geoTransCoord,
+  );
+
+  return server;
+}
