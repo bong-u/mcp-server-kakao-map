@@ -1,9 +1,33 @@
 {
   "name": "mcp-server-kakao-map",
   "version": "0.3.1",
+  "mcpName": "io.github.bong-u/mcp-server-kakao-map",
   "description": "MCP server exposing Kakao Local REST APIs (place search, address, geocoding, coord conversion) as discrete tools.",
+  "keywords": [
+    "mcp",
+    "mcp-server",
+    "model-context-protocol",
+    "kakao",
+    "kakao-map",
+    "kakaomap",
+    "kakao-local",
+    "geocoding",
+    "reverse-geocoding",
+    "place-search",
+    "korea",
+    "카카오맵",
+    "카카오지도"
+  ],
   "license": "MIT",
   "author": "bong-u",
+  "homepage": "https://github.com/bong-u/mcp-server-kakao-map#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bong-u/mcp-server-kakao-map.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bong-u/mcp-server-kakao-map/issues"
+  },
   "type": "module",
   "bin": {
     "mcp-server-kakao-map": "dist/index.js"
