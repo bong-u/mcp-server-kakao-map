@@ -7,7 +7,7 @@ import { LocalCategorySchema, localCategory } from './tools/local-category.js';
 import { LocalKeywordSchema, localKeyword } from './tools/local-keyword.js';
 
 export const SERVER_NAME = 'mcp-server-kakao-map';
-export const SERVER_VERSION = '0.3.1';
+export const SERVER_VERSION = '0.3.2';
 
 // 팩토리로 두는 이유: 테스트가 stdio 프로세스를 띄우지 않고 인스턴스를 얻을 수 있고,
 // 향후 serveStdio(() => buildServer())로 넘어갈 때 그대로 쓰인다.
